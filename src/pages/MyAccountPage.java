@@ -16,6 +16,7 @@ public class MyAccountPage {
 	WebElement updateBtn;
 	List<WebElement> deleteBtn;
 	WebElement addAddress;
+	WebElement lastDelBtn;
 
 	public MyAccountPage(WebDriver driver) {
 		super();
@@ -42,15 +43,21 @@ public class MyAccountPage {
 				.xpath("//a[@href=\"http://automationpractice.com/index.php?controller=address&id_address=444519\"]"));
 	}
 
-	
 	public List<WebElement> getDeleteBtn() {
-		return driver.findElements(By.xpath(
-				"//a[@title=\"Delete\"]"));
+		return driver.findElements(By.xpath("//a[@title=\"Delete\"]"));
 	}
 
 	public WebElement getAddAddress() {
 		return driver
 				.findElement(By.xpath("//a[@href=\"http://automationpractice.com/index.php?controller=address\"]"));
+	}
+
+	private void setLastDelBtn(WebElement lastDelBtn) {
+		this.lastDelBtn = lastDelBtn;
+	}
+
+	public WebElement getLastDelBtn() {
+		return lastDelBtn;
 	}
 
 	public void navigateToMyAddresses() {
@@ -66,7 +73,18 @@ public class MyAccountPage {
 		getAddAddress().click();
 
 	}
-	public void deleteLastAddress() {
-		
+
+	public int countDeleteAddressBtn() {
+		return getDeleteBtn().size();
 	}
+
+	public void deleteLastAddress() {
+		int lastBtn = countDeleteAddressBtn() - 1;  // index of last address for delete
+		String addressForDelete = getDeleteBtn().get(lastBtn).getAttribute("href");  // geting href attribute for xpath
+		setLastDelBtn(driver.findElement(By.xpath("//a[@href=\""+addressForDelete+"\"]")));
+		getLastDelBtn().click();
+		driver.switchTo().alert().accept();  // OK JS alert popup confirmation 
+	}
+	
+
 }

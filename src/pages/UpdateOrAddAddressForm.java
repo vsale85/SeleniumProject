@@ -13,6 +13,7 @@ public class UpdateOrAddAddressForm {
 	WebDriver driver;
 	WebElement name, lastName, address, city, postalCode, phoneHome, addressTitle, saveBtn;
 	Select state;
+//	List<WebElement> deleteBtns;  // moved to MyAccountPage
 
 	public UpdateOrAddAddressForm(WebDriver driver) {
 		super();
@@ -54,6 +55,11 @@ public class UpdateOrAddAddressForm {
 	public Select getState() {
 		return state = new Select(driver.findElement(By.name("id_state")));
 	}
+	
+
+//	public List<WebElement> getDeleteBtns() {
+//		return deleteBtns;
+//	}
 
 	public void updateAddress(String firstName, String lastName, String address, String city, String zipCode,
 			String phone) throws InterruptedException {
@@ -116,4 +122,5 @@ public class UpdateOrAddAddressForm {
 			return false;
 		}
 	}
+	
 }
