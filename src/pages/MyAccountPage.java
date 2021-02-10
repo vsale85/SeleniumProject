@@ -17,12 +17,14 @@ public class MyAccountPage {
 	List<WebElement> deleteBtn;
 	WebElement addAddress;
 	WebElement lastDelBtn;
+	WebElement backToAccount;
 
 	public MyAccountPage(WebDriver driver) {
 		super();
 		this.driver = driver;
 	}
 
+	// GETTERS
 	public WebElement getMyAddresses() { // custom xpath
 		return driver
 				.findElement(By.xpath("//a[@href=\"http://automationpractice.com/index.php?controller=addresses\"]"));
@@ -60,6 +62,12 @@ public class MyAccountPage {
 		return lastDelBtn;
 	}
 
+	public WebElement getBackToAccount() {
+		return driver
+				.findElement(By.xpath("//a[@href=\"http://automationpractice.com/index.php?controller=my-account\"]"));
+	}
+
+	// NAVIGATE METHODS
 	public void navigateToMyAddresses() {
 		getMyAddresses().click();
 	}
@@ -74,6 +82,13 @@ public class MyAccountPage {
 
 	}
 
+	public void navigateToPersonalInfo() {
+		getMyPersonalInfo().click();
+	}
+	public void backToAccount() {
+		getBackToAccount().click();
+	}
+	// EXECUTION METHODS
 	public int countDeleteAddressBtn() {
 		return getDeleteBtn().size();
 	}

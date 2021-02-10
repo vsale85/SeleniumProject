@@ -11,6 +11,7 @@ import pages.Authentication;
 import pages.ExcelReader;
 import pages.MainPage;
 import pages.MyAccountPage;
+import pages.MyPersonalInfoPage;
 import pages.UpdateOrAddAddressForm;
 
 public class TestBase {
@@ -20,6 +21,7 @@ public class TestBase {
 	ExcelReader reader;
 	MyAccountPage myAccount;
 	UpdateOrAddAddressForm updateOrAddForm;
+	MyPersonalInfoPage myPersonalInfo;
 
 	// function for login
 	public void login() throws InterruptedException {
@@ -41,7 +43,8 @@ public class TestBase {
 		reader = new ExcelReader("data/TestPlan.xlsx");
 		myAccount = new MyAccountPage(driver);
 		updateOrAddForm = new UpdateOrAddAddressForm(driver);
-
+		myPersonalInfo = new MyPersonalInfoPage(driver);
+		
 		driver.manage().window().maximize();
 
 	}
@@ -50,7 +53,7 @@ public class TestBase {
 	public void afterClass() throws InterruptedException {
 
 		Thread.sleep(5000);
-	//	driver.quit();
+		driver.quit();
 
 	}
 }

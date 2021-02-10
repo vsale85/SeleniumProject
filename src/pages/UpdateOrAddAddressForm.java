@@ -75,7 +75,7 @@ public class UpdateOrAddAddressForm {
 		getPostalCode().sendKeys(zipCode);
 		getPhoneHome().clear();
 		getPhoneHome().sendKeys(phone);
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 		getSaveBtn().click();
 
 	}
