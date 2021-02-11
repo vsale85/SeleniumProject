@@ -12,6 +12,8 @@ import pages.ExcelReader;
 import pages.MainPage;
 import pages.MyAccountPage;
 import pages.MyPersonalInfoPage;
+import pages.MyWhishListsPage;
+import pages.ShoppingPage;
 import pages.UpdateOrAddAddressForm;
 
 public class TestBase {
@@ -22,6 +24,8 @@ public class TestBase {
 	MyAccountPage myAccount;
 	UpdateOrAddAddressForm updateOrAddForm;
 	MyPersonalInfoPage myPersonalInfo;
+	MyWhishListsPage wishList;
+	ShoppingPage shopping;
 
 	// function for login
 	public void login() throws InterruptedException {
@@ -44,6 +48,8 @@ public class TestBase {
 		myAccount = new MyAccountPage(driver);
 		updateOrAddForm = new UpdateOrAddAddressForm(driver);
 		myPersonalInfo = new MyPersonalInfoPage(driver);
+		wishList = new MyWhishListsPage(driver);
+		shopping = new ShoppingPage(driver);
 		
 		driver.manage().window().maximize();
 
