@@ -33,7 +33,10 @@ public class ExcelReader {
 
 		DataFormatter formatter = new DataFormatter();
 		String stringCell = formatter.formatCellValue(cell);
-	
+		
 		return stringCell;
+	}
+	public void closeFis() throws IOException {
+		fis.close();
 	}
 }

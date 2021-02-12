@@ -3,9 +3,12 @@ package pages;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ShoppingPage {
 
@@ -16,10 +19,14 @@ public class ShoppingPage {
 	WebElement closePopup;
 	WebElement cart;
 	WebElement quantity;
-	WebElement product;
+	WebElement inputQuantity;
+	WebElement more;
+	WebElement product1;
+	WebElement product2;
+	WebElement product3;
 	WebElement addQuantity;
+	List<WebElement> deleteProduct;
 	List<WebElement> numProduct;
-	Actions actions;
 
 	public ShoppingPage(WebDriver driver) {
 		super();
@@ -32,11 +39,11 @@ public class ShoppingPage {
 	}
 
 	public WebElement getAddToCart2() {
-		return driver.findElement(By.xpath("//a[@data-id-product=\"2\"]"));
+		return driver.findElement(By.xpath("//a[@data-id-product=\"3\"]"));
 	}
 
 	public WebElement getAddToCart3() {
-		return driver.findElement(By.xpath("//a[@data-id-product=\"3\"]"));
+		return driver.findElement(By.xpath("//a[@data-id-product=\"7\"]"));
 	}
 
 	public WebElement getClosePopup() {
@@ -44,68 +51,135 @@ public class ShoppingPage {
 	}
 
 	public WebElement getCart() {
-		return driver.findElement(By.xpath("//a[@href=\"http://automationpractice.com/index.php?controller=order\"]"));
+		return driver.findElement(By.className("shopping_cart"));
 	}
 
 	public WebElement getQuantity() {
-		return driver.findElement(By.id("quantity_wanted"));
+		return driver.findElement(By.className("ajax_cart_quantity"));
 	}
 
-	public WebElement getProduct() {
-		return driver.findElement(By.xpath("//a[@title=\"Faded Short Sleeve T-shirts\"]"));
+	public WebElement getProduct1() {
+		return driver.findElement(By.xpath("//img[@title=\"Faded Short Sleeve T-shirts\"]"));
+
+	}
+
+	public WebElement getProduct2() {
+		return driver.findElement(By.xpath("//img[@title=\"Printed Dress\"]"));
+
+	}
+
+	public WebElement getProduct3() {
+		return driver.findElement(By.xpath("//img[@title=\"Printed Chiffon Dress\"]"));
+
 	}
 
 	public WebElement getAddQuantity() {
-		return driver.findElement(By.className("exclusive"));
+		return driver.findElement(By.name("Submit"));
 	}
 
 	public List<WebElement> getNumProduct() {
-		WebElement cart = driver.findElement(By.className("shopping_cart"));
+		WebElement cart = driver.findElement(By.className("products"));
 		return cart.findElements(By.tagName("dt"));
 	}
+
+	public WebElement getMore() {
+		return driver.findElement(By.xpath("//*[@id=\"homefeatured\"]/li[1]/div/div[2]/div[2]/a[2]/span"));
+	}
+
+	public WebElement getInputQuantity() {
+		return driver.findElement(By.id("quantity_wanted"));
+	}
+
+	public List<WebElement> getDeleteProduct() {
+	//	return driver.findElements(By.className("icon-trash"));
+		jsScrollToElement(getCart());
+		hoverElement(getCart());
+		return driver.findElements(By.className("ajax_cart_block_remove_link"));
+	}
 	
-
-	public Actions getActions() {
-		return actions;
-	}
-
-	public void setActions(Actions actions) {
-		this.actions = new Actions(driver);
-	}
-
 	// METHODS
-	public void addToCartOne() {
-		getActions().moveToElement(getAddToCart1()).perform();
-		getAddToCart1().click();
-		getClosePopup().click();
+	public void jsScrollToElement(WebElement webElement) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+
+		js.executeScript("arguments[0].scrollIntoView();", webElement);
 	}
 
-	public void addToCartOneQuantity() {
-		getProduct().click();
-		getQuantity().clear();
-		getQuantity().sendKeys("3");
-		getAddQuantity().click();
-		getClosePopup().click();
+	public void hoverElement(WebElement webElement) {
+		Actions actions = new Actions(driver);
+
+		actions.moveToElement(webElement).build().perform();
 	}
 
-	public void addToCartMulti() {
-		getAddToCart1().click();
-		getAddToCart2().click();
-		getAddToCart3().click();
-		getClosePopup().click();
+	public void waiter(WebElement elementToWait) {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(elementToWait));
+		elementToWait.click();
+	}
+	
+	public void addProduct(WebElement scrollTo, WebElement click) throws InterruptedException {
+
+		jsScrollToElement(scrollTo);
+		hoverElement(scrollTo);
+		click.click();
+
+	}
+
+	public void addToCartOne() throws InterruptedException {
+
+		addProduct(getProduct1(), getAddToCart1());
+		waiter(getClosePopup());
+		Thread.sleep(2000);
+
+	}
+
+	public void addToCartOneQuantity() throws InterruptedException {
+	
+		addProduct(getProduct1(), getMore());
+		Thread.sleep(2000);
+		getInputQuantity().clear();
+		getInputQuantity().sendKeys("3");
+		jsScrollToElement(getAddQuantity());
+		waiter(getAddQuantity());	
+		waiter(getClosePopup());
+
+	}
+
+	public void addToCartMulti() throws InterruptedException {
+
+		addProduct(getProduct1(), getAddToCart1());
+		waiter(getClosePopup());
+		addProduct(getProduct2(), getAddToCart2());
+		waiter(getClosePopup());
+		addProduct(getProduct3(), getAddToCart3());
+		waiter(getClosePopup());
+		System.out.println(getDeleteProduct().size());
 	}
 
 	public void navigateToCart() {
 		getCart().click();
 	}
 
-	public int countProducts() {
-		
-		actions.moveToElement(getCart()).perform();
+	public int countProducts() throws InterruptedException {
+		jsScrollToElement(getCart());
+		hoverElement(getCart());
+		Thread.sleep(2000);
+
 		return getNumProduct().size();
 	}
 
-	public String productQuantity() {
+	public String productQuantity() throws InterruptedException {
+		jsScrollToElement(getCart());
+		Thread.sleep(2000);
+
 		return getQuantity().getText();
+	}
+	public void deleteProducts() throws InterruptedException {
+		jsScrollToElement(getCart());
+		hoverElement(driver.findElement(By.xpath("//a[@title=\"View my shopping cart\"]")));
+		Thread.sleep(5000);
+		for (int i = 0; i < getDeleteProduct().size(); i++) {
+			getDeleteProduct().get(i).click();
+			Thread.sleep(2000);
+		}
 	}
 }

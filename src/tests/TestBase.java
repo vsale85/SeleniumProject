@@ -56,9 +56,10 @@ public class TestBase {
 	}
 
 	@AfterClass
-	public void afterClass() throws InterruptedException {
+	public void afterClass() throws InterruptedException, IOException {
 
 		Thread.sleep(5000);
+		reader.closeFis();
 		driver.quit();
 
 	}
