@@ -52,10 +52,18 @@ public class MyWhishListsPage {
 	}
 	public void deleteWhishlist() {
 		if (countWishLists() > 1) {
+			
 			getDeleteListBtn().click();
 			driver.switchTo().alert().accept();  // OK JS alert popup confirmation 
+		}		
+	}
+	public void deleteAllWhishlists() throws InterruptedException {
+		 for (int i = 2; i < countWishLists(); i++) {
+			 getDeleteListBtn().click();
+			 driver.switchTo().alert().accept();  
+			 Thread.sleep(2000);
 		}
-		
+				
 	}
 	
 }

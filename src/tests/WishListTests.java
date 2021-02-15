@@ -49,6 +49,7 @@ public class WishListTests extends TestBase{
 			wishList.deleteWhishlist();
 			assertEquals(wishList.countWishLists(), numList - 1);
 		}
+		wishList.deleteAllWhishlists();
 		
 	}
 	
