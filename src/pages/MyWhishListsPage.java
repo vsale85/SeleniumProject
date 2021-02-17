@@ -13,12 +13,12 @@ public class MyWhishListsPage {
 	WebElement saveListBtn;
 	WebElement deleteListBtn;
 	List<WebElement> deleteListsBtn;
-	
+
 	public MyWhishListsPage(WebDriver driver) {
 		super();
 		this.driver = driver;
 	}
-	
+
 	// GETTERS
 	public WebElement getListName() {
 		return driver.findElement(By.id("name"));
@@ -29,41 +29,49 @@ public class MyWhishListsPage {
 	}
 
 	public WebElement getDeleteListBtn() {
-		int lastBtn = countWishLists() - 1;  // last index in list of TR's
-		return	getDeleteLists().get(lastBtn).findElement(By.className("icon")); // target deleteBtn from TR tag
-	
+		int lastBtn = countWishLists() - 1; // last index in list of TR's
+		return getDeleteLists().get(lastBtn).findElement(By.className("icon")); // target deleteBtn from TR tag
+
 	}
-	
-	
+
 	public List<WebElement> getDeleteLists() {
-		return driver.findElements(By.tagName("tr"));
+		// return driver.findElements(By.tagName("tr"));
+		return driver.findElements(By.xpath("//tr[starts-with(@id ,'wishlist')]"));
 	}
 
 	// METHODS
 	public int countWishLists() {
-		System.out.println(getDeleteLists().size());
+
 		return getDeleteLists().size();
-		
+
 	}
-	public void addWhishlist(String listName) {
+
+	public void addWhishlist(String listName) throws InterruptedException {
 		getListName().clear();
 		getListName().sendKeys(listName);
 		getSaveListBtn().click();
+		Thread.sleep(2000);
 	}
-	public void deleteWhishlist() {
-		if (countWishLists() > 1) {
-			
+
+	public void deleteWhishlist() throws InterruptedException {
+		if (countWishLists() > 0) {
 			getDeleteListBtn().click();
-			driver.switchTo().alert().accept();  // OK JS alert popup confirmation 
-		}		
-	}
-	public void deleteAllWhishlists() throws InterruptedException {
-		 for (int i = 2; i < countWishLists(); i++) {
-			 getDeleteListBtn().click();
-			 driver.switchTo().alert().accept();  
-			 Thread.sleep(2000);
+			driver.switchTo().alert().accept(); // OK JS alert popup confirmation
+			Thread.sleep(2000);
 		}
-				
 	}
-	
+
+	public void deleteAllWhishlists() throws InterruptedException {
+		if (countWishLists() > 0) {
+			for (int i = 0; i < countWishLists(); i++) {
+				System.out.println(getDeleteLists().size());
+				getDeleteListBtn().click();
+				driver.switchTo().alert().accept();
+				Thread.sleep(3000);
+				System.out.println(getDeleteLists().size());
+			}
+		}
+
+	}
+
 }
